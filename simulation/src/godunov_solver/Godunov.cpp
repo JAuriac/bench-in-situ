@@ -191,9 +191,11 @@ extern "C"
         Kokkos::deep_copy(mm_u_host, mm_u);
 
         printf("*********** mm_u.rank() %i ***********************\n", mm_u.rank());
-        printf("*********** mm_u.extent() %i ***********************\n", mm_u.extent());
+        printf("*********** mm_u.extent(0) %i ***********************\n", mm_u.extent(0));
+        printf("*********** mm_u.extent(1) %i ***********************\n", mm_u.extent(1));
         printf("*********** mm_u_host.rank() %i ***********************\n", mm_u_host.rank());
-        printf("*********** mm_u_host.extent() %i ***********************\n", mm_u_host.extent());
+        printf("*********** mm_u_host.extent(0) %i ***********************\n", mm_u_host.extent(0));
+        printf("*********** mm_u_host.extent(1) %i ***********************\n", mm_u_host.extent(1));
         Kokkos::printf("rank = %d, extent(0) = %d, extent(1) = %d, span = %lu\n",
         mm_u.rank(), mm_u.extent(0), mm_u.extent(1), mm_u.span());
 
