@@ -242,6 +242,8 @@ void GodunovSolver::pdiExposeData()
         PDI_multi_expose("in_iter",
                          "m_u", (void*)(m_u.data()), PDI_OUT,
                          "m_u_kokkos_view_dimensions", (void*)&m_u_kokkos_view_dimensions, PDI_OUT,
+                         "m_u_host", (void*)(m_u.data()), PDI_OUT,
+                         "m_u_host_kokkos_view_dimensions", (void*)&m_u_kokkos_view_dimensions, PDI_OUT,
                          "time", (void*)&(m_t), PDI_OUT,
                          NULL);
     }
