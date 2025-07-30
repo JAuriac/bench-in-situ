@@ -200,6 +200,17 @@ extern "C"
         mm_u.rank(), mm_u.extent(0), mm_u.extent(1), mm_u.span());
 
         // expose of mm_u_host
+        double* copied_ptr =  mm_u_host.data();
+        PDI_multi_expose("host",
+                         "iStep", iter, PDI_OUT,
+                         "local_full_field", copied_ptr, PDI_OUT, // u_host
+                         "m_u_host_kokkos_view_dimensions", dim_host_ptr, PDI_OUT,
+                         NULL);
+
+        PDI_release("m_u_host_kokkos_view_dimensions");
+        PDI_release("m_u_kokkos_view_dimensions");
+        PDI_release("m_u_host");
+        PDI_release("m_u");
     }
 }
 

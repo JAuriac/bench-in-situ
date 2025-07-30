@@ -165,4 +165,21 @@ pdi:
           - *Bz_description
           - *dX_description
 
-    
+    - file: ${filename}_bis
+      datasets: *full_datasets # a list of datasets inside the file created on first access
+      collision_policy: write_into
+      on_event: host
+      write:
+        iStep:
+        local_full_field: # u_host:
+          - *d_description
+          - *E_description
+          - *mx_description
+          - *my_description
+          - *mz_description
+          - *Bx_description
+          - *By_description
+          - *Bz_description
+          - *dX_description
+        # m_u_host_kokkos_view_dimensions:
+        # m_u_host_kokkos_view_dimensions: ${m_u_host_kokkos_view_dimensions}
