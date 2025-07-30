@@ -129,6 +129,7 @@ pdi:
           writeXML: {}
         in_iter:
           cop:
+            iter: ${iStep}
             m_u: ${m_u}
             m_u_host: ${m_u_host}
             m_u_kokkos_view_dimensions: ${m_u_kokkos_view_dimensions}
