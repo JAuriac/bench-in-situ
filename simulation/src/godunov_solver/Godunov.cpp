@@ -176,6 +176,31 @@ void GodunovSolver::prepareNextOutput(Real& dt)
     
 }
 
+extern "C"
+{
+    void cop() {
+        double* a; PDI_access("m_u", (void**)&a, PDI_IN);
+        double* b; PDI_access("m_u_host", (void**)&b, PDI_IN);
+        std::array<size_t, 2>* m_u_dim; PDI_access("m_u_kokkos_view_dimensions", (void**)&m_u_dim, PDI_IN);
+        size_t* dim_ptr = m_u_dim->data();
+        std::array<size_t, 2>* m_u_host_dim; PDI_access("m_u_host_kokkos_view_dimensions", (void**)&m_u_host_dim, PDI_IN);
+        size_t* dim_host_ptr = m_u_host_dim->data();
+
+        Kokkos::View<Real*, Kokkos::LayoutLeft, Kokkos::HostSpace> mm_u(a, dim_ptr[0], dim_ptr[1]);
+        Kokkos::View<Real*, Kokkos::LayoutLeft, Kokkos::HostSpace> mm_u_host(b, dim_host_ptr[0], dim_host_ptr[1]);
+        Kokkos::deep_copy(mm_u_host, mm_u);
+
+        printf("*********** mm_u.rank() %i ***********************\n", mm_u.rank());
+        printf("*********** mm_u.extent() %i ***********************\n", mm_u.extent());
+        printf("*********** mm_u_host.rank() %i ***********************\n", mm_u_host.rank());
+        printf("*********** mm_u_host.extent() %i ***********************\n", mm_u_host.extent());
+        Kokkos::printf("rank = %d, extent(0) = %d, extent(1) = %d, span = %lu\n",
+        mm_u.rank(), mm_u.extent(0), mm_u.extent(1), mm_u.span());
+
+        // expose of mm_u_host
+    }
+}
+
 void GodunovSolver::pdiExposeData()
 {
   Kokkos::fence();
@@ -211,7 +236,12 @@ void GodunovSolver::pdiExposeData()
                         m_params->thermo.gamma, m_params->thermo.mmw);
         Kokkos::Profiling::popRegion();
         Kokkos::Profiling::popRegion();
-
+        std::array<size_t, 2> m_u_kokkos_view_dimensions = { m_u.extent(0), m_u.extent(1) };
+        PDI_multi_expose("in_iter",
+                         "m_u", (void*)(m_u.data()), PDI_OUT,
+                         "m_u_kokkos_view_dimensions", (void*)&m_u_kokkos_view_dimensions, PDI_OUT,
+                         "time", (void*)&(m_t), PDI_OUT,
+                         NULL);
     }
 
   Kokkos::fence();
