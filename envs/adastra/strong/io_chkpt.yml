@@ -170,7 +170,7 @@ pdi:
       collision_policy: write_into
       on_event: host
       write:
-        iStep:
+        # iStep:
         local_full_field: # u_host:
           - *d_description
           - *E_description

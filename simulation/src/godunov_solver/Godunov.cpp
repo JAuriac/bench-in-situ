@@ -202,7 +202,7 @@ extern "C"
         // expose of mm_u_host
         double* copied_ptr =  mm_u_host.data();
         PDI_multi_expose("host",
-                         "iStep", iter, PDI_OUT,
+                        //  "iStep", iter, PDI_OUT,
                          "local_full_field", copied_ptr, PDI_OUT, // u_host
                          "m_u_host_kokkos_view_dimensions", dim_host_ptr, PDI_OUT,
                          NULL);
