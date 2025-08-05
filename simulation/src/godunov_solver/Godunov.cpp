@@ -208,6 +208,7 @@ extern "C"
                          "m_u_host_kokkos_view_dimensions", dim_host_ptr, PDI_OUT,
                          NULL);
 
+                         
         PDI_release("m_u_host_kokkos_view_dimensions");
         PDI_release("m_u_kokkos_view_dimensions");
         PDI_release("m_u_host");
